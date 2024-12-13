@@ -30,7 +30,7 @@ func HTTPMiddleware(next http.Handler) http.Handler {
 }
 
 // GRPCUnaryMiddleware is a GRPC middleware that records the request count and duration of the request.
-func GRPCUnaryMiddleware(ctx context.Context, req interface{}, _ *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+func GRPCUnaryMiddleware(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 	start := time.Now()
 	res, err := handler(ctx, req)
 	duration := time.Since(start)
@@ -39,7 +39,7 @@ func GRPCUnaryMiddleware(ctx context.Context, req interface{}, _ *grpc.UnaryServ
 		status = 500
 	}
 
-	register("grpc", req.(*grpc.UnaryServerInfo).FullMethod, status, duration)
+	register("grpc", info.FullMethod, status, duration)
 	return res, err
 }
 
