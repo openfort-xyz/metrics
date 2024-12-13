@@ -31,6 +31,10 @@ func HTTPMiddleware(next http.Handler) http.Handler {
 
 // GRPCUnaryMiddleware is a GRPC middleware that records the request count and duration of the request.
 func GRPCUnaryMiddleware(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+	once.Do(func() {
+		prometheus.MustRegister(requestCount, requestDuration)
+	})
+
 	start := time.Now()
 	res, err := handler(ctx, req)
 	duration := time.Since(start)
@@ -45,6 +49,10 @@ func GRPCUnaryMiddleware(ctx context.Context, req interface{}, info *grpc.UnaryS
 
 // GRPCStreamMiddleware is a GRPC middleware that records the request count and duration of the request.
 func GRPCStreamMiddleware(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+	once.Do(func() {
+		prometheus.MustRegister(requestCount, requestDuration)
+	})
+
 	start := time.Now()
 	err := handler(srv, ss)
 	duration := time.Since(start)
@@ -59,6 +67,10 @@ func GRPCStreamMiddleware(srv interface{}, ss grpc.ServerStream, info *grpc.Stre
 
 // RabbitMQMiddleware is a PubSub middleware that records the request count and duration of the request.
 func RabbitMQMiddleware(next pubsub.Handler) pubsub.Handler {
+	once.Do(func() {
+		prometheus.MustRegister(requestCount, requestDuration)
+	})
+
 	return func(ctx context.Context, event *pubsub.Event) error {
 		start := time.Now()
 		err := next(ctx, event)
@@ -74,6 +86,10 @@ func RabbitMQMiddleware(next pubsub.Handler) pubsub.Handler {
 }
 
 func JSONRPCMiddleware(next jsonrpc.Handler) jsonrpc.Handler {
+	once.Do(func() {
+		prometheus.MustRegister(requestCount, requestDuration)
+	})
+	
 	return func(ctx context.Context, r *jsonrpc.Request) *jsonrpc.Response {
 		start := time.Now()
 
