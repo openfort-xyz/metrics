@@ -30,15 +30,31 @@ func HTTPMiddleware(next http.Handler) http.Handler {
 }
 
 // GRPCUnaryMiddleware is a GRPC middleware that records the request count and duration of the request.
-func GRPCUnaryMiddleware() grpc.UnaryClientInterceptor {
-	return func(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
-		start := time.Now()
-		err := invoker(ctx, method, req, reply, cc, opts...)
-		duration := time.Since(start)
-
-		register("GRPC", method, 200, duration)
-		return err
+func GRPCUnaryMiddleware(ctx context.Context, req interface{}, _ *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+	start := time.Now()
+	res, err := handler(ctx, req)
+	duration := time.Since(start)
+	status := 200
+	if err != nil {
+		status = 500
 	}
+
+	register("grpc", req.(*grpc.UnaryServerInfo).FullMethod, status, duration)
+	return res, err
+}
+
+// GRPCStreamMiddleware is a GRPC middleware that records the request count and duration of the request.
+func GRPCStreamMiddleware(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+	start := time.Now()
+	err := handler(srv, ss)
+	duration := time.Since(start)
+	status := 200
+	if err != nil {
+		status = 500
+	}
+
+	register("grpc", info.FullMethod, status, duration)
+	return err
 }
 
 // RabbitMQMiddleware is a PubSub middleware that records the request count and duration of the request.
