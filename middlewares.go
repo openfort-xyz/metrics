@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"time"
 
+	"go.openfort.xyz/jsonrpc"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"go.openfort.xyz/pubsub"
 	"google.golang.org/grpc"
@@ -52,5 +54,17 @@ func RabbitMQMiddleware(next pubsub.Handler) pubsub.Handler {
 
 		register("rabbitmq", event.Topic.String(), status, duration)
 		return err
+	}
+}
+
+func JSONRPCMiddleware(next jsonrpc.Handler) jsonrpc.Handler {
+	return func(ctx context.Context, r *jsonrpc.Request) *jsonrpc.Response {
+		start := time.Now()
+
+		n := next(ctx, r)
+		duration := time.Since(start)
+
+		register("JSONRPC "+r.JSONRPC, r.Method, n.StatusCode, duration)
+		return n
 	}
 }
