@@ -25,7 +25,7 @@ func HTTPMiddleware(next http.Handler) http.Handler {
 		next.ServeHTTP(srw, r)
 		duration := time.Since(start)
 
-		register(r.Method, r.URL.Path, srw.status, duration)
+		registerNormalized(r.Method, r.URL.Path, srw.status, duration)
 	})
 }
 
@@ -89,7 +89,7 @@ func JSONRPCMiddleware(next jsonrpc.Handler) jsonrpc.Handler {
 	once.Do(func() {
 		prometheus.MustRegister(requestCount, requestDuration)
 	})
-	
+
 	return func(ctx context.Context, r *jsonrpc.Request) *jsonrpc.Response {
 		start := time.Now()
 
