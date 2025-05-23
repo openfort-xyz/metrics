@@ -11,5 +11,5 @@ func register(method, path string, status int, duration time.Duration) {
 }
 
 func registerNormalized(method, path string, status int, duration time.Duration) {
-	register(method, normalizer.path(path), status, duration)
+	register(method, normalize(path), status, duration)
 }

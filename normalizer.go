@@ -4,38 +4,33 @@ import (
 	"regexp"
 )
 
-var normalizer = newPathNormalizer()
-
-type pathNormalizer struct {
-	uuid  replacement
-	token replacement
-}
-
-type replacement struct {
+// Some of our measurements contains label with high-cardinality values,
+// saturating Prometheus. These values need to be normalized.
+type normalization struct {
 	pattern *regexp.Regexp
 	exp     string
 }
 
-func newPathNormalizer() pathNormalizer {
-	return pathNormalizer{
-		uuid: replacement{
-			pattern: regexp.MustCompile(`/\/[\w]*[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}/g`),
-			exp:     "/:uuid",
-		},
-		token: replacement{
-			pattern: regexp.MustCompile(`/[\w-]{24,}`),
-			exp:     "/:token",
-		},
-	}
+var normalizations = [2]normalization{
+	// UUIDs.
+	{
+		pattern: regexp.MustCompile(`/\/[\w]*[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}/g`),
+		exp:     "/:uuid",
+	},
+	// Tokens.
+	{
+		pattern: regexp.MustCompile(`/[\w-]{24,}`),
+		exp:     "/:token",
+	},
 }
 
-func (pn pathNormalizer) path(p string) string {
+func normalize(p string) string {
 	if p == "" || p == "/" {
 		return p
 	}
 
-	p = pn.uuid.pattern.ReplaceAllString(p, pn.uuid.exp)
-	p = pn.token.pattern.ReplaceAllString(p, pn.token.exp)
-
+	for _, r := range normalizations {
+		p = r.pattern.ReplaceAllString(p, r.exp)
+	}
 	return p
 }
