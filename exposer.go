@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
@@ -22,13 +23,14 @@ type Server struct {
 func NewServer(port int) *Server {
 	return &Server{
 		server: &http.Server{
-			Addr: fmt.Sprintf(":%d", port),
+			Addr:              fmt.Sprintf(":%d", port),
+			ReadHeaderTimeout: 30 * time.Second,
 		},
 	}
 }
 
 // Start starts the metrics server
-func (s *Server) Start(ctx context.Context) error {
+func (s *Server) Start(_ context.Context) error {
 	http.Handle("/metrics", ExposeHTTP())
 	return s.server.ListenAndServe()
 }
