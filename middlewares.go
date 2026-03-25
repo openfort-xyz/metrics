@@ -85,6 +85,7 @@ func RabbitMQMiddleware(next pubsub.Handler) pubsub.Handler {
 	}
 }
 
+// JSONRPCMiddleware is a JSONRPC middleware that records the request count and duration of the request.
 func JSONRPCMiddleware(next jsonrpc.Handler) jsonrpc.Handler {
 	once.Do(func() {
 		prometheus.MustRegister(requestCount, requestDuration)

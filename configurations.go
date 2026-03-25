@@ -1,3 +1,4 @@
+// Package metrics provides middleware for recording request counts and durations.
 package metrics
 
 import (
