@@ -1,11 +1,12 @@
-module go.openfort.xyz/metrics
+module github.com/openfort-xyz/metrics
 
-go 1.22.0
+go 1.24.0
 
 require (
+	github.com/openfort-xyz/jsonrpc v0.0.7
+	github.com/openfort-xyz/pubsub v0.1.25
 	github.com/prometheus/client_golang v1.20.5
-	go.openfort.xyz/pubsub v0.0.18
-	google.golang.org/grpc v1.69.0
+	google.golang.org/grpc v1.79.3
 )
 
 require (
@@ -17,10 +18,9 @@ require (
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/common v0.61.0 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
-	go.openfort.xyz/jsonrpc v0.0.5 // indirect
-	golang.org/x/net v0.32.0 // indirect
-	golang.org/x/sys v0.28.0 // indirect
-	golang.org/x/text v0.21.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20241209162323-e6fa225c2576 // indirect
-	google.golang.org/protobuf v1.35.2 // indirect
+	golang.org/x/net v0.48.0 // indirect
+	golang.org/x/sys v0.39.0 // indirect
+	golang.org/x/text v0.32.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20251202230838-ff82c1b0f217 // indirect
+	google.golang.org/protobuf v1.36.10 // indirect
 )

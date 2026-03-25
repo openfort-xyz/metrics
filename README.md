@@ -3,7 +3,7 @@
 # metrics
 
 ```go
-import "go.openfort.xyz/metrics"
+import "github.com/openfort-xyz/metrics"
 ```
 
 ## Index
@@ -16,12 +16,12 @@ import "go.openfort.xyz/metrics"
 - [func RabbitMQMiddleware\(next pubsub.Handler\) pubsub.Handler](<#RabbitMQMiddleware>)
 - [type Server](<#Server>)
   - [func NewServer\(port int\) \*Server](<#NewServer>)
-  - [func \(s \*Server\) Start\(ctx context.Context\) error](<#Server.Start>)
+  - [func \(s \*Server\) Start\(\_ context.Context\) error](<#Server.Start>)
   - [func \(s \*Server\) Stop\(ctx context.Context\) error](<#Server.Stop>)
 
 
 <a name="ExposeHTTP"></a>
-## func ExposeHTTP
+## func [ExposeHTTP](<https://github.com/openfort-xyz/metrics/blob/main/exposer.go#L13>)
 
 ```go
 func ExposeHTTP() http.Handler
@@ -30,7 +30,7 @@ func ExposeHTTP() http.Handler
 ExposeHTTP returns a http.Handler that exposes the metrics
 
 <a name="GRPCStreamMiddleware"></a>
-## func GRPCStreamMiddleware
+## func [GRPCStreamMiddleware](<https://github.com/openfort-xyz/metrics/blob/main/middlewares.go#L51>)
 
 ```go
 func GRPCStreamMiddleware(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error
@@ -39,7 +39,7 @@ func GRPCStreamMiddleware(srv interface{}, ss grpc.ServerStream, info *grpc.Stre
 GRPCStreamMiddleware is a GRPC middleware that records the request count and duration of the request.
 
 <a name="GRPCUnaryMiddleware"></a>
-## func GRPCUnaryMiddleware
+## func [GRPCUnaryMiddleware](<https://github.com/openfort-xyz/metrics/blob/main/middlewares.go#L33>)
 
 ```go
 func GRPCUnaryMiddleware(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error)
@@ -48,7 +48,7 @@ func GRPCUnaryMiddleware(ctx context.Context, req interface{}, info *grpc.UnaryS
 GRPCUnaryMiddleware is a GRPC middleware that records the request count and duration of the request.
 
 <a name="HTTPMiddleware"></a>
-## func HTTPMiddleware
+## func [HTTPMiddleware](<https://github.com/openfort-xyz/metrics/blob/main/middlewares.go#L16>)
 
 ```go
 func HTTPMiddleware(next http.Handler) http.Handler
@@ -57,7 +57,7 @@ func HTTPMiddleware(next http.Handler) http.Handler
 HTTPMiddleware is a HTTP middleware that records the request count and duration of the request.
 
 <a name="JSONRPCMiddleware"></a>
-## func JSONRPCMiddleware
+## func [JSONRPCMiddleware](<https://github.com/openfort-xyz/metrics/blob/main/middlewares.go#L88>)
 
 ```go
 func JSONRPCMiddleware(next jsonrpc.Handler) jsonrpc.Handler
@@ -66,7 +66,7 @@ func JSONRPCMiddleware(next jsonrpc.Handler) jsonrpc.Handler
 
 
 <a name="RabbitMQMiddleware"></a>
-## func RabbitMQMiddleware
+## func [RabbitMQMiddleware](<https://github.com/openfort-xyz/metrics/blob/main/middlewares.go#L69>)
 
 ```go
 func RabbitMQMiddleware(next pubsub.Handler) pubsub.Handler
@@ -75,7 +75,7 @@ func RabbitMQMiddleware(next pubsub.Handler) pubsub.Handler
 RabbitMQMiddleware is a PubSub middleware that records the request count and duration of the request.
 
 <a name="Server"></a>
-## type Server
+## type [Server](<https://github.com/openfort-xyz/metrics/blob/main/exposer.go#L18-L20>)
 
 Server is a metrics server
 
@@ -86,7 +86,7 @@ type Server struct {
 ```
 
 <a name="NewServer"></a>
-### func NewServer
+### func [NewServer](<https://github.com/openfort-xyz/metrics/blob/main/exposer.go#L23>)
 
 ```go
 func NewServer(port int) *Server
@@ -95,16 +95,16 @@ func NewServer(port int) *Server
 NewServer creates a new metrics server
 
 <a name="Server.Start"></a>
-### func \(\*Server\) Start
+### func \(\*Server\) [Start](<https://github.com/openfort-xyz/metrics/blob/main/exposer.go#L33>)
 
 ```go
-func (s *Server) Start(ctx context.Context) error
+func (s *Server) Start(_ context.Context) error
 ```
 
 Start starts the metrics server
 
 <a name="Server.Stop"></a>
-### func \(\*Server\) Stop
+### func \(\*Server\) [Stop](<https://github.com/openfort-xyz/metrics/blob/main/exposer.go#L39>)
 
 ```go
 func (s *Server) Stop(ctx context.Context) error
