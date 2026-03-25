@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"time"
 
-	"go.openfort.xyz/jsonrpc"
+	"github.com/openfort-xyz/jsonrpc"
 
+	"github.com/openfort-xyz/pubsub"
 	"github.com/prometheus/client_golang/prometheus"
-	"go.openfort.xyz/pubsub"
 	"google.golang.org/grpc"
 )
 

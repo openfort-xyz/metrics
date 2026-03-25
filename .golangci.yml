@@ -1,3 +1,5 @@
+version: "2"
+
 linters:
   disable-all: true
   enable:
@@ -5,18 +7,14 @@ linters:
     - dogsled
     - errcheck
     - errorlint
-    - exportloopref
     - gocheckcompilerdirectives
     - gochecknoinits
     - goconst
     - gocritic
     - gocyclo
     - godox
-    - gofmt
-    - goimports
     - goprintffuncname
     - gosec
-    - gosimple
     - govet
     - ineffassign
     - misspell
@@ -24,7 +22,6 @@ linters:
     - noctx
     - revive
     - staticcheck
-    - stylecheck
     - unconvert
     - unparam
     - unused
@@ -32,6 +29,11 @@ linters:
 issues:
   exclude-files:
     - ".*_test\\.go"
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
 
 run:
   timeout: 3m
